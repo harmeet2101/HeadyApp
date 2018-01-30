@@ -3,57 +3,42 @@ package com.heady.ecomerce.headyapp.adapters;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.heady.ecomerce.headyapp.R;
-import com.heady.ecomerce.headyapp.rest.response.Categories;
-import com.heady.ecomerce.headyapp.rest.response.ProductDetail;
 import com.heady.ecomerce.headyapp.rest.response.Variant;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-import java.util.Set;
 
 /**
  * Created by harmeet.singh on 1/30/2018.
  */
 
-public class ProductDetailsRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+public class VariantsDetailRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
 
     private Context context;
-    private List<ProductDetail> productDetails;
+    private List<Variant> variantList;
     private static final int ITEM_VIEW_TYPE_LOADING = 0;
     private static final int ITEM_VIEW_TYPE_EMPTY = 1;
     private static final int ITEM_VIEW_TYPE_NORMAL = 2;
-    private IProductSelect iProductSelect;
 
 
-    public ProductDetailsRecyclerAdapter(Context context, List<ProductDetail> productDetails){
+    public VariantsDetailRecyclerAdapter(Context context, List<Variant> variantList){
         this.context =context;
-        this.productDetails = productDetails;
-        try{
-            iProductSelect = (IProductSelect)context;
-        }catch (ClassCastException e){
-            e.printStackTrace();
-        }
+        this.variantList = variantList;
+
     }
 
     @Override
     public int getItemViewType(int position) {
-        if(productDetails == null)
+        if(variantList == null)
             return ITEM_VIEW_TYPE_LOADING;
-        else if(productDetails.isEmpty())
+        else if(variantList.isEmpty())
             return ITEM_VIEW_TYPE_EMPTY;
         else
             return ITEM_VIEW_TYPE_NORMAL;
@@ -76,7 +61,7 @@ public class ProductDetailsRecyclerAdapter extends RecyclerView.Adapter<Recycler
                 viewHolder = new EmptyHolder(view);
                 break;
             case ITEM_VIEW_TYPE_NORMAL:
-                view = LayoutInflater.from(parent.getContext()).inflate(R.layout.product_category_view,parent,false);
+                view = LayoutInflater.from(parent.getContext()).inflate(R.layout.variants_detail,parent,false);
                 viewHolder = new DataHolder(view);
                 break;
 
@@ -87,9 +72,9 @@ public class ProductDetailsRecyclerAdapter extends RecyclerView.Adapter<Recycler
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
 
-        if (productDetails == null)
+        if (variantList == null)
             onBindLoadingHolder(holder);
-        else if(productDetails.isEmpty())
+        else if(variantList.isEmpty())
             onBindEmptyHolder(holder);
         else
             onBindDataHolder(holder,position);
@@ -97,16 +82,16 @@ public class ProductDetailsRecyclerAdapter extends RecyclerView.Adapter<Recycler
 
     @Override
     public int getItemCount() {
-        if(productDetails == null)
+        if(variantList == null)
             return 1;
-        else if (productDetails.isEmpty())
+        else if (variantList.isEmpty())
             return 1;
-        else return productDetails.size();
+        else return variantList.size();
     }
 
 
-    public void updateDataSource(List<ProductDetail> categoriesList){
-        this.productDetails = categoriesList;
+    public void updateDataSource(List<Variant> variantList){
+        this.variantList = variantList;
         notifyDataSetChanged();
     }
 
@@ -129,40 +114,26 @@ public class ProductDetailsRecyclerAdapter extends RecyclerView.Adapter<Recycler
     }
 
 
-    protected class DataHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
+    protected class DataHolder extends RecyclerView.ViewHolder {
 
 
-        protected TextView productTextview;
-        protected View containerView;
-        private int pos;
+        protected TextView colorTextview,sizeTextview,priceTextview;
         public DataHolder(View view){
             super(view);
 
-            productTextview = (TextView)view.findViewById(R.id.productTextview);
-            containerView = view.findViewById(R.id.container);
-            initListeners();
+            colorTextview = (TextView)view.findViewById(R.id.colorTextview);
+            sizeTextview = (TextView)view.findViewById(R.id.SizeTextview);
+            priceTextview = (TextView)view.findViewById(R.id.priceTextview);
         }
 
         @SuppressLint("NewApi")
         public void setData(int position){
-            productTextview.setText(productDetails.get(position).getName());
-            this.pos = position;
+            colorTextview.setText(variantList.get(position).getColor());
+            sizeTextview.setText(variantList.get(position).getSize());
+            priceTextview.setText(variantList.get(position).getPrice()+"");
         }
 
 
-        private void initListeners(){
-            containerView.setOnClickListener(this);
-        }
-
-        @Override
-        public void onClick(View v) {
-            switch (v.getId()){
-
-                case R.id.container:
-                    iProductSelect.onProductSelected(productDetails.get(pos).getVariants());
-                    break;
-            }
-        }
     }
 
 
@@ -189,12 +160,8 @@ public class ProductDetailsRecyclerAdapter extends RecyclerView.Adapter<Recycler
             infoTextview = (TextView)view.findViewById(R.id.infoTextview);
         }
         public void setLabel(){
-            infoTextview.setText("No Product Details Found.");
+            infoTextview.setText("No Variant Details Found.");
         }
     }
 
-    public interface IProductSelect{
-
-        void onProductSelected(List<Variant> variantList);
-    }
 }
