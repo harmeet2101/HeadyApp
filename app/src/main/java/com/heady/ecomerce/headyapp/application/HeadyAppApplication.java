@@ -2,6 +2,7 @@ package com.heady.ecomerce.headyapp.application;
 
 import android.app.Application;
 
+import com.heady.ecomerce.headyapp.model.DataModel;
 import com.heady.ecomerce.headyapp.rest.api.RetrofitGsonBuilder;
 
 /**
@@ -14,12 +15,13 @@ public class HeadyAppApplication extends Application {
 
     private RetrofitGsonBuilder retrofitGsonBuilder;
     private static HeadyAppApplication instance = null;
-
+    private DataModel dataModel;
 
     public void onCreate(){
         super.onCreate();
         instance = this;
         initRestClient();
+        dataModel = DataModel.getInstance(this);
     }
 
     public static HeadyAppApplication getInstance(){
@@ -32,6 +34,10 @@ public class HeadyAppApplication extends Application {
 
     public RetrofitGsonBuilder getRetrofitGsonBuilder() {
         return retrofitGsonBuilder;
+    }
+
+    public DataModel getDataModel() {
+        return dataModel;
     }
 
 }
