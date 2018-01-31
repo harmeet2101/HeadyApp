@@ -1,13 +1,18 @@
 package com.heady.ecomerce.headyapp.activities;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.Button;
+import android.view.Window;
+import android.widget.TextView;
 
 import com.heady.ecomerce.headyapp.model.DataModel;
 import com.heady.ecomerce.headyapp.R;
@@ -40,18 +45,17 @@ public class MainActivity extends Activity implements ProductRecylerAdapter.IPro
     private ProductRecylerAdapter adapter;
     private List<Categories> categoriesList;
     private List<Rankings> rankingsList;
-    private Button sortButton;
+    private View sortView;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         mProductRecylerView = (RecyclerView)findViewById(R.id.recyclerView);
-        sortButton = (Button)findViewById(R.id.sortButton);
-        sortButton.setOnClickListener(new View.OnClickListener() {
+        sortView = findViewById(R.id.sortView);
+        sortView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-                showMostViewed();
+                showDialog();
             }
         });
         initGridLayoutManager();
@@ -154,7 +158,6 @@ public class MainActivity extends Activity implements ProductRecylerAdapter.IPro
                 rankedProductList.add(new RankedProduct(rankingDetails.get(i).getId(),
                         map.get(rankingDetails.get(i).getId()).getName(),
                         rankingDetails.get(i).getView_count()));
-              //  Log.d(MainActivity.class.getSimpleName(), mostViewedList.get(i).toString());
             }
         }
 
@@ -186,7 +189,6 @@ public class MainActivity extends Activity implements ProductRecylerAdapter.IPro
                 rankedProductList.add(new RankedProduct(rankingDetails.get(i).getId(),
                         map.get(rankingDetails.get(i).getId()).getName(),
                         rankingDetails.get(i).getOrder_count()));
-                //  Log.d(MainActivity.class.getSimpleName(), mostViewedList.get(i).toString());
             }
         }
 
@@ -218,7 +220,6 @@ public class MainActivity extends Activity implements ProductRecylerAdapter.IPro
                 rankedProductList.add(new RankedProduct(rankingDetails.get(i).getId(),
                         map.get(rankingDetails.get(i).getId()).getName(),
                         rankingDetails.get(i).getShares()));
-                //  Log.d(MainActivity.class.getSimpleName(), mostViewedList.get(i).toString());
             }
         }
 
@@ -231,4 +232,42 @@ public class MainActivity extends Activity implements ProductRecylerAdapter.IPro
     }
 
 
+    private void showDialog(){
+        AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
+        builder.setCancelable(true);
+        LayoutInflater inflater = (LayoutInflater)getApplicationContext().
+                getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        View view = inflater.inflate(R.layout.sort_dialog,null);
+        TextView mostViewTextview = (TextView)view.findViewById(R.id.mvpTextview);
+        TextView mostOrderedTextview = (TextView)view.findViewById(R.id.mopTextview);
+        TextView mostSharedTextview = (TextView)view.findViewById(R.id.mspTextview);
+
+        builder.setView(view);
+        final AlertDialog alertDialog = builder.create();
+        Window window = alertDialog.getWindow();
+        window.setGravity(Gravity.BOTTOM);
+        alertDialog.show();
+        mostViewTextview.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showMostViewed();
+                alertDialog.dismiss();
+            }
+        });
+        mostOrderedTextview.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showMostOrdered();
+                alertDialog.dismiss();
+            }
+        });
+
+        mostSharedTextview.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showMostShared();
+                alertDialog.dismiss();
+            }
+        });
+    }
 }
