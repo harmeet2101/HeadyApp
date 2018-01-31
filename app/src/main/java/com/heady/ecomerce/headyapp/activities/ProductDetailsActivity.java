@@ -40,11 +40,12 @@ public class ProductDetailsActivity extends Activity implements ProductDetailsRe
     }
 
     @Override
-    public void onProductSelected(List<Variant> variantList) {
+    public void onProductSelected(String productName,List<Variant> variantList) {
 
         Intent intent = new Intent(getApplicationContext(),VariantActivity.class);
         Bundle b = new Bundle();
         b.putSerializable("variant", (Serializable) variantList);
+        b.putString("name",productName);
         intent.putExtras(b);
         startActivity(intent);
     }

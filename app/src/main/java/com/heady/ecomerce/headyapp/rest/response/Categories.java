@@ -39,4 +39,11 @@ public class Categories  implements Serializable{
                 ", products=" + products +
                 '}';
     }
+
+    public boolean equals(Object obj){
+
+        Categories categories = (Categories)obj;
+        return getId()==categories.getId();
+    }
+
 }

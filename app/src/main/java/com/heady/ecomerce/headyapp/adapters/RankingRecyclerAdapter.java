@@ -3,57 +3,43 @@ package com.heady.ecomerce.headyapp.adapters;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.heady.ecomerce.headyapp.R;
-import com.heady.ecomerce.headyapp.rest.response.Categories;
 import com.heady.ecomerce.headyapp.rest.response.ProductDetail;
-import com.heady.ecomerce.headyapp.rest.response.Variant;
+import com.heady.ecomerce.headyapp.rest.response.RankedProduct;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-import java.util.Set;
 
 /**
- * Created by harmeet.singh on 1/30/2018.
+ * Created by harmeet.singh on 1/31/2018.
  */
 
-public class ProductDetailsRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+public class RankingRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
 
     private Context context;
-    private List<ProductDetail> productDetails;
+    private List<RankedProduct> rankedProductList;
     private static final int ITEM_VIEW_TYPE_LOADING = 0;
     private static final int ITEM_VIEW_TYPE_EMPTY = 1;
     private static final int ITEM_VIEW_TYPE_NORMAL = 2;
-    private IProductSelect iProductSelect;
 
 
-    public ProductDetailsRecyclerAdapter(Context context, List<ProductDetail> productDetails){
+    public RankingRecyclerAdapter(Context context, List<RankedProduct> rankedProductList){
         this.context =context;
-        this.productDetails = productDetails;
-        try{
-            iProductSelect = (IProductSelect)context;
-        }catch (ClassCastException e){
-            e.printStackTrace();
-        }
+        this.rankedProductList = rankedProductList;
+
     }
 
     @Override
     public int getItemViewType(int position) {
-        if(productDetails == null)
+        if(rankedProductList == null)
             return ITEM_VIEW_TYPE_LOADING;
-        else if(productDetails.isEmpty())
+        else if(rankedProductList.isEmpty())
             return ITEM_VIEW_TYPE_EMPTY;
         else
             return ITEM_VIEW_TYPE_NORMAL;
@@ -76,7 +62,7 @@ public class ProductDetailsRecyclerAdapter extends RecyclerView.Adapter<Recycler
                 viewHolder = new EmptyHolder(view);
                 break;
             case ITEM_VIEW_TYPE_NORMAL:
-                view = LayoutInflater.from(parent.getContext()).inflate(R.layout.product_category_view,parent,false);
+                view = LayoutInflater.from(parent.getContext()).inflate(R.layout.ranked_product,parent,false);
                 viewHolder = new DataHolder(view);
                 break;
 
@@ -87,9 +73,9 @@ public class ProductDetailsRecyclerAdapter extends RecyclerView.Adapter<Recycler
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
 
-        if (productDetails == null)
+        if (rankedProductList == null)
             onBindLoadingHolder(holder);
-        else if(productDetails.isEmpty())
+        else if(rankedProductList.isEmpty())
             onBindEmptyHolder(holder);
         else
             onBindDataHolder(holder,position);
@@ -97,16 +83,16 @@ public class ProductDetailsRecyclerAdapter extends RecyclerView.Adapter<Recycler
 
     @Override
     public int getItemCount() {
-        if(productDetails == null)
+        if(rankedProductList == null)
             return 1;
-        else if (productDetails.isEmpty())
+        else if (rankedProductList.isEmpty())
             return 1;
-        else return productDetails.size();
+        else return rankedProductList.size();
     }
 
 
-    public void updateDataSource(List<ProductDetail> categoriesList){
-        this.productDetails = categoriesList;
+    public void updateDataSource(List<RankedProduct> rankedProductList){
+        this.rankedProductList = rankedProductList;
         notifyDataSetChanged();
     }
 
@@ -132,20 +118,22 @@ public class ProductDetailsRecyclerAdapter extends RecyclerView.Adapter<Recycler
     protected class DataHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
 
 
-        protected TextView productTextview;
+        protected TextView productTextview,countTextview;
         protected View containerView;
         private int pos;
         public DataHolder(View view){
             super(view);
 
             productTextview = (TextView)view.findViewById(R.id.productTextview);
+            countTextview = (TextView)view.findViewById(R.id.countTextview);
             containerView = view.findViewById(R.id.container);
             initListeners();
         }
 
         @SuppressLint("NewApi")
         public void setData(int position){
-            productTextview.setText(productDetails.get(position).getName());
+            productTextview.setText(rankedProductList.get(position).getName());
+            countTextview.setText("count: "+rankedProductList.get(position).getCount());
             this.pos = position;
         }
 
@@ -159,8 +147,7 @@ public class ProductDetailsRecyclerAdapter extends RecyclerView.Adapter<Recycler
             switch (v.getId()){
 
                 case R.id.container:
-                    iProductSelect.onProductSelected(productDetails.get(pos).getName(),
-                            productDetails.get(pos).getVariants());
+
                     break;
             }
         }
@@ -192,10 +179,5 @@ public class ProductDetailsRecyclerAdapter extends RecyclerView.Adapter<Recycler
         public void setLabel(){
             infoTextview.setText("No Product Details Found.");
         }
-    }
-
-    public interface IProductSelect{
-
-        void onProductSelected(String productName,List<Variant> variantList);
     }
 }
