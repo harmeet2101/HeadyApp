@@ -44,14 +44,14 @@
             android:textSize="16sp" />
 
         <TextView
-            android:id="@+id/countTextview"
+            android:id="@+id/priceTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@+id/productTextview"
             android:layout_gravity="center_horizontal"
             android:gravity="top|center_horizontal"
             android:layout_marginBottom="10dp"
-            android:text="Count:"
+            android:text="Shop Now"
             android:maxLines="1"
             android:singleLine="true"
             android:textStyle="italic"

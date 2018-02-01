@@ -13,7 +13,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.Window;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.heady.ecomerce.headyapp.db.DatabaseHandler;
 import com.heady.ecomerce.headyapp.model.DataModel;
 import com.heady.ecomerce.headyapp.R;
 import com.heady.ecomerce.headyapp.adapters.ProductRecylerAdapter;
@@ -101,9 +103,10 @@ public class MainActivity extends Activity implements ProductRecylerAdapter.IPro
     private class ProductListener implements Callback<ProductList> {
 
         private DataModel dataModel;
-
+        private DatabaseHandler databaseHandler;
         public ProductListener(){
             dataModel = HeadyAppApplication.getInstance().getDataModel();
+            databaseHandler = new DatabaseHandler(getApplicationContext());
         }
         @Override
         public void onResponse(Call<ProductList> call, Response<ProductList> response) {
@@ -115,12 +118,28 @@ public class MainActivity extends Activity implements ProductRecylerAdapter.IPro
                 rankingsList = products.getRankings();
                 adapter.updateDataSource(categoriesList);
                 updateDataModel();
+                long res =saveData(categoriesList);
+                saveProductData(categoriesList);
+                if(res > 0 )Toast.makeText(getBaseContext(),"record added successfully: "+res,Toast.LENGTH_SHORT).show();
+                Log.d("Db",databaseHandler.getAllCategories().size()+"");
+                Log.d("Db",databaseHandler.getAllProductDetails().size()+"");
             }
         }
 
         private void updateDataModel(){
             dataModel.setCategoriesList(categoriesList);
             dataModel.setRankingsList(rankingsList);
+        }
+
+        private long saveData(List<Categories> categoriesList){
+             return databaseHandler.insertCategories(categoriesList);
+        }
+
+        private void saveProductData(List<Categories> categoriesList){
+            for (int i =0;i<categoriesList.size();i++){
+
+                databaseHandler.insertProducts(categoriesList.get(i).getProducts());
+            }
         }
 
         @Override

@@ -40,10 +40,21 @@ public class Categories  implements Serializable{
                 '}';
     }
 
-    public boolean equals(Object obj){
+    /*public boolean equals(Object obj){
 
         Categories categories = (Categories)obj;
         return getId()==categories.getId();
+    }*/
+
+    public void setId(int id) {
+        this.id = id;
     }
 
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setProducts(List<ProductDetail> products) {
+        this.products = products;
+    }
 }

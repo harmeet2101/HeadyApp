@@ -44,6 +44,26 @@ public class ProductDetail implements Serializable{
         return tax;
     }
 
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setDate_added(String date_added) {
+        this.date_added = date_added;
+    }
+
+    public void setVariants(List<Variant> variants) {
+        this.variants = variants;
+    }
+
+    public void setTax(Tax tax) {
+        this.tax = tax;
+    }
+
     @Override
     public String toString() {
         return "ProductDetail{" +

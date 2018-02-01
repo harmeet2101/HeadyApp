@@ -115,7 +115,7 @@ public class RankingRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.Vi
     }
 
 
-    protected class DataHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
+    protected class DataHolder extends RecyclerView.ViewHolder {
 
 
         protected TextView productTextview,countTextview;
@@ -127,7 +127,7 @@ public class RankingRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.Vi
             productTextview = (TextView)view.findViewById(R.id.productTextview);
             countTextview = (TextView)view.findViewById(R.id.countTextview);
             containerView = view.findViewById(R.id.container);
-            initListeners();
+
         }
 
         @SuppressLint("NewApi")
@@ -137,20 +137,6 @@ public class RankingRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.Vi
             this.pos = position;
         }
 
-
-        private void initListeners(){
-            containerView.setOnClickListener(this);
-        }
-
-        @Override
-        public void onClick(View v) {
-            switch (v.getId()){
-
-                case R.id.container:
-
-                    break;
-            }
-        }
     }
 
 

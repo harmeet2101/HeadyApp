@@ -65,7 +65,7 @@ public class ProductRecylerAdapter extends RecyclerView.Adapter<RecyclerView.Vie
                 viewHolder = new EmptyHolder(view);
                 break;
             case ITEM_VIEW_TYPE_NORMAL:
-                view = LayoutInflater.from(parent.getContext()).inflate(R.layout.product_grid,parent,false);
+                view = LayoutInflater.from(parent.getContext()).inflate(R.layout.product_gridview2,parent,false);
                 viewHolder = new DataHolder(view);
                 break;
 
