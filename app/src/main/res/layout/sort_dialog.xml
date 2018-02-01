@@ -10,7 +10,7 @@
         android:textSize="14sp"
         android:text="Sort by"
         android:padding="10dp"
-        android:textColor="@android:color/black"
+        android:textColor="#3F51B5"
         android:gravity="center"
         android:layout_gravity="center_horizontal"
         />
@@ -26,6 +26,7 @@
         android:textSize="14sp"
         android:id="@+id/mvpTextview"
         android:text="Most Viewed Products"
+        android:textColor="@android:color/black"
         android:gravity="center"
         android:layout_gravity="center_horizontal"
         />
@@ -39,6 +40,7 @@
         android:padding="10dp"
         android:textSize="14sp"
         android:text="Most OrdeRed Products"
+        android:textColor="@android:color/black"
         android:id="@+id/mopTextview"
         android:gravity="center"
         android:layout_gravity="center_horizontal"
@@ -54,6 +56,7 @@
         android:textSize="14sp"
         android:id="@+id/mspTextview"
         android:text="Most ShaRed Products"
+        android:textColor="@android:color/black"
         android:gravity="center"
         android:layout_gravity="center_horizontal"
         />
