@@ -153,14 +153,19 @@ public class MainActivity extends Activity implements ProductRecylerAdapter.IPro
     }
 
 
-    private List<RankingDetails> getRankingDetails(int position){
+    private List<RankingDetails> getRankingDetails(int position)throws IndexOutOfBoundsException{
         return rankingsList.get(position).getRankingDetails();
     }
 
     private void showMostViewed(){
 
-        List<RankingDetails> rankingDetails = getRankingDetails(0);
-
+        List<RankingDetails> rankingDetails = null;
+        try {
+            rankingDetails = getRankingDetails(0);
+        }catch (IndexOutOfBoundsException e){
+            e.printStackTrace();
+            return;
+        }
         Map<Integer,ProductDetail> map = new HashMap<>();
 
         List<RankedProduct> rankedProductList = new ArrayList<>();
@@ -190,7 +195,13 @@ public class MainActivity extends Activity implements ProductRecylerAdapter.IPro
 
     private void showMostOrdered(){
 
-        List<RankingDetails> rankingDetails = getRankingDetails(1);
+        List<RankingDetails> rankingDetails = null;
+        try {
+            rankingDetails = getRankingDetails(1);
+        }catch (IndexOutOfBoundsException e){
+            e.printStackTrace();
+            return;
+        }
 
         Map<Integer,ProductDetail> map = new HashMap<>();
 
@@ -221,7 +232,13 @@ public class MainActivity extends Activity implements ProductRecylerAdapter.IPro
 
     private void showMostShared(){
 
-        List<RankingDetails> rankingDetails = getRankingDetails(2);
+        List<RankingDetails> rankingDetails = null;
+        try {
+             rankingDetails = getRankingDetails(2);
+        }catch (IndexOutOfBoundsException e){
+            e.printStackTrace();
+            return;
+        }
 
         Map<Integer,ProductDetail> map = new HashMap<>();
 
